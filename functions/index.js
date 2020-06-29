@@ -3,7 +3,7 @@ const app = require('express')()
 const cors = require('cors')
 const FBauth = require('./utils/fbAuth')
 
-const { getAllEntries, postOneEntry, getEntry } = require('./handlers/entries')
+const { getAllEntries, postOneEntry, getEntry, addEntryDetails } = require('./handlers/entries')
 const { signup, login } = require('./handlers/users')
 const { getPrimaryFeelings, getFeeling, getAllFeelings } = require('./handlers/feelings')
 
@@ -14,8 +14,8 @@ app.use(cors({ origin: true }))
 app.get('/entries', FBauth, getAllEntries)
 app.get('/entry/:entryId', FBauth, getEntry)
 app.post('/entry', FBauth, postOneEntry)
+app.post('/entry/:entryId/details', FBauth, addEntryDetails)
 // todo: app.post('/entry/image', FBauth, uploadImage)
-// todo entry details: app.get('/entry/id/details', FBauth, getEntryDetails)
 
 // Users routes
 app.post('/signup', signup)

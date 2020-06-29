@@ -129,10 +129,11 @@ exports.postOneEntry = (request, response) => {
                         return response.status(500).json({ error: 'Something went wrong' })
                     })
             } else {
-                db.doc(`/entries/${data.docs[0].id}`).update({
-                    feelingId: request.body.feelingId,
-                    updatedAt: new Date().toISOString()
-                })
+                db.doc(`/entries/${data.docs[0].id}`)
+                    .update({
+                        feelingId: request.body.feelingId,
+                        updatedAt: new Date().toISOString()
+                    })
                     .then(() => {
                         return response.json({ message: `Document ${data.docs[0].id} updated successfully` })
                     })
@@ -150,28 +151,25 @@ exports.postOneEntry = (request, response) => {
 
 // Add entry details
 // todo: pass the id of the entry to update in datatbase
-/*exports.addEntryDetails = (request, response) => {
-
-    todo: entry exists ?
-   db.doc(`/entries/${request.params.entryId}`).get()
-   .then(doc => {
-       if (!doc.exists) {
-           return response.status(404).json({ error: 'Entry not found' })
-       }
-   })
+exports.addEntryDetails = (request, response) => {
+    db.doc(`/entries/${request.params.entryId}`).get()
+        .then(doc => {
+            if (!doc.exists) return response.status(404).json({ error: 'Entry not found' })
+            else if (doc.data().userId !== request.user.uid) return response.status(401).json({ error: 'Unauthorized' })
+        })
 
     const entryDetails = reduceEntryDetails(request.body)
-    const entryId = 0
+    const entryId = request.params.entryId
 
     db.doc(`/entries/${entryId}`).update(entryDetails)
-      .then(() => {
-          return response.json({ message: 'Details added successfully' })
-      })
-      .catch(error => {
-          console.error(error)
-          return response.status(500).json({ error: error.code })
-      })
-}*/
+        .then(() => {
+            return response.json({ message: 'Details added successfully' })
+        })
+        .catch(error => {
+            console.error(error)
+            return response.status(500).json({ error: error.code })
+        })
+}
 
 // Get entry details
 // todo: Get entry details
