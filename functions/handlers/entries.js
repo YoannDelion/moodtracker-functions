@@ -62,7 +62,8 @@ exports.getAllEntries = (request, response) => {
                     userId: doc.data().userId,
                     feelingId: doc.data().feelingId,
                     entryDate: doc.data().entryDate,
-                    createdAt: doc.data().createdAt
+                    createdAt: doc.data().createdAt,
+                    note: doc.data().note
                 }
                 entries.push(entryData)
             })
