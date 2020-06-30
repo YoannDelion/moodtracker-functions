@@ -161,7 +161,10 @@ exports.addEntryDetails = (request, response) => {
     const entryDetails = reduceEntryDetails(request.body)
     const entryId = request.params.entryId
 
-    db.doc(`/entries/${entryId}`).update(entryDetails)
+    db.doc(`/entries/${entryId}`).update({
+        ...entryDetails,
+        updatedAt: new Date().toISOString()
+    })
         .then(() => {
             return response.json({ message: 'Details added successfully' })
         })
